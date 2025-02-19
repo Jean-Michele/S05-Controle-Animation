@@ -5,12 +5,14 @@ using UnityEngine.InputSystem;
 
 public class ControleAraigneeV2 : MonoBehaviour
 {
-    // variables de mouvement et contrôle
+    // variables de mouvement et contrï¿½le
     [SerializeField] private float _vitessePromenade;
+
+    [SerializeField] private bool _attaque;
     private Rigidbody _rb;
     private Vector3 directionInput;
 
-    // variables de contrôle d'animation
+    // variables de contrï¿½le d'animation
     private Animator _animator;
     private float _rotationVelocity;
 
@@ -24,9 +26,20 @@ public class ControleAraigneeV2 : MonoBehaviour
     {
         Vector2 directionAvecVitesse = directionBase.Get<Vector2>() * _vitessePromenade;
         directionInput = new Vector3(directionAvecVitesse.x, 0f, directionAvecVitesse.y);
-        _animator.SetFloat("Deplacement", directionInput.magnitude);
+        _animator.SetFloat("Mouvement", directionInput.magnitude);
     }
 
+    void OnAttack()
+    {
+        Debug.Log("a");
+        _animator.SetBool("Attack", true);
+        Invoke("TerminerAttaque", 0.2f);
+    }
+
+    void TerminerAttaque()
+    {
+        _animator.SetBool("Attack", false);
+    }
     void FixedUpdate()
     {
         // calculer et appliquer la translation
